@@ -4,7 +4,7 @@ function PIA() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchData = () => {
     fetch('/api/pia')  // Use PIA endpoint
       .then(response => {
         if (!response.ok) {
@@ -14,10 +14,15 @@ function PIA() {
       })
       .then(data => {
         setData(data); // Set data to state
+        console.log(data)
       })
       .catch(error => {
         setError(error.message); // Manejo de errores
       });
+  }
+  useEffect(() => {
+    fetchData()
+    setInterval(fetchData, 5000)
   }, []);
 
   if (error) {
