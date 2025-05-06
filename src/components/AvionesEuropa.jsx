@@ -5,24 +5,24 @@ function PIA() {
   const [error, setError] = useState(null);
 
   const fetchData = () => {
-    fetch('/api/pia')  // Use PIA endpoint
+    fetch('/api/pia')
       .then(response => {
         if (!response.ok) {
           throw new Error('Error en la solicitud: ' + response.statusText);
         }
         return response.json();
       })
-      .then(data => {
-        setData(data); // Set data to state
-        console.log(data)
+      .then(newData => {
+        setData(newData);
       })
       .catch(error => {
-        setError(error.message); // Manejo de errores
-      });
-  }
+        setError(error.message);
+      })
+  };
   useEffect(() => {
-    fetchData()
-    setInterval(fetchData, 5000)
+    fetchData(); // Primera carga
+    const intervalId = setInterval(fetchData, 10000); // Luego cada 10 segundos
+    return () => clearInterval(intervalId); // Limpiar intervalo al desmontar
   }, []);
 
   if (error) {
